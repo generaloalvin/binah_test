@@ -3,6 +3,8 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
+import { FcvModule } from './fcv/fcv.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -11,8 +13,9 @@ import { UserModule } from './user/user.module';
       process.env.MONGODB_URI || 'mongodb://localhost:27017/local',
     ),
     UserModule,
+    FcvModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
