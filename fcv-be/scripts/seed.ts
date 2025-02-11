@@ -16,6 +16,7 @@ async function bootstrap() {
     await userService.create({
       email: faker.internet.email(),
       name: faker.person.firstName() + ' ' + faker.person.lastName(),
+      password: 'testtest',
     });
     logger.log(`User ${i + 1} created`);
   }

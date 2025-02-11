@@ -10,7 +10,7 @@ export class UserController {
 
   @Post('login')
   async login(@Body() body: LoginUserDto) {
-    const response = await this.authService.login(body.email);
+    const response = await this.authService.login(body.email, body.password);
 
     if (!response.success) {
       throw new UnauthorizedException('Invalid email');

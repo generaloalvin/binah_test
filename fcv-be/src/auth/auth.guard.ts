@@ -8,6 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { JwtPayload } from './auth.interface';
 import { UserModel } from '../user/user.model';
+import { UserDto } from '../user/user.dto';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -27,7 +28,13 @@ export class AuthGuard implements CanActivate {
         secret: process.env.SECRET || 'test',
       });
 
-      request['user'] = await this.userModel.findById(payload._id);
+      const user = await this.userModel.findById(payload._id);
+
+      if (!user) {
+        throw new UnauthorizedException();
+      }
+
+      request['user'] = UserDto.from(user);
     } catch {
       throw new UnauthorizedException();
     }

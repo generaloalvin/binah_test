@@ -44,6 +44,7 @@ describe('UserService', () => {
     const user = {
       email: 'test@test.com',
       name: 'Test User',
+      password: 'testtest',
     };
 
     const createdUser = await service.create(user);

@@ -1,19 +1,42 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthLoginResponse, JwtPayload } from './auth.interface';
 import { UserModel } from '../user/user.model';
+import { hash, compare } from 'bcryptjs';
 
 @Injectable()
 export class AuthService {
+  private readonly saltRounds = 0;
+
   constructor(
     private jwtService: JwtService,
-    private userModel: UserModel,
+    @Inject(forwardRef(() => UserModel)) private userModel: UserModel,
   ) {}
 
-  async login(email: string): Promise<AuthLoginResponse> {
+  async hashPassword(password: string): Promise<string> {
+    return hash(password, this.saltRounds);
+  }
+
+  async comparePassword(password: string, hash: string): Promise<boolean> {
+    try {
+      return await compare(password, hash);
+    } catch {
+      return false;
+    }
+  }
+
+  async login(email: string, password: string): Promise<AuthLoginResponse> {
     const user = await this.userModel.findByEmail(email);
 
     if (!user) {
+      return {
+        success: false,
+      };
+    }
+
+    const isValidPassword = await this.comparePassword(password, user.password);
+
+    if (!isValidPassword) {
       return {
         success: false,
       };

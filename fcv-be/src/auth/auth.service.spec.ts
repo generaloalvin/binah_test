@@ -37,13 +37,15 @@ describe('AuthService', () => {
       _id: '60f7b3b3b3b3b3b3b3b3b3',
       email: 'test@test.com',
       name: 'Test User',
+      password: await service.hashPassword('testtest'),
     });
     jwtServiceMock.sign = jest.fn().mockReturnValue('token');
 
-    const token = await service.login('test@test.com');
+    const token = await service.login('test@test.com', 'testtest');
 
     expect(modelMock.findByEmail).toHaveBeenCalledWith('test@test.com');
     expect(jwtServiceMock.sign).toHaveBeenCalledWith({
+      _id: '60f7b3b3b3b3b3b3b3b3b3',
       email: 'test@test.com',
     });
     expect(token).toEqual({
@@ -55,7 +57,7 @@ describe('AuthService', () => {
   it('should return a failure response', async () => {
     modelMock.findByEmail = jest.fn().mockResolvedValueOnce(null);
 
-    const token = await service.login('error@test.com');
+    const token = await service.login('error@test.com', 'testtest');
 
     expect(modelMock.findByEmail).toHaveBeenCalledWith('error@test.com');
     expect(token).toEqual({
