@@ -6,6 +6,7 @@ import { UserModule } from './user/user.module';
 import { FcvModule } from './fcv/fcv.module';
 import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
+import { StorageModule } from './storage/storage.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { AuthModule } from './auth/auth.module';
     UserModule,
     FcvModule,
     AuthModule,
+    StorageModule,
   ],
   controllers: [AppController],
   providers: [AppService],
