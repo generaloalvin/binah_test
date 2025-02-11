@@ -1,5 +1,3 @@
-
-
 export enum FcvTestTypes {
   TB = 'TB',
   SMK = 'SMK',

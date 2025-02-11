@@ -7,6 +7,7 @@ import { FcvModule } from './fcv/fcv.module';
 import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
 import { StorageModule } from './storage/storage.module';
+import { AiModule } from './ai/ai.module';
 
 @Module({
   imports: [
@@ -18,8 +19,9 @@ import { StorageModule } from './storage/storage.module';
     FcvModule,
     AuthModule,
     StorageModule,
+    AiModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

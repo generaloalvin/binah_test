@@ -1,4 +1,10 @@
-import { Body, Controller, HttpCode, Post, UnauthorizedException } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  Post,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { LoginUserDto } from './user.dto';
 import { AuthService } from '../auth/auth.service';
@@ -6,7 +12,7 @@ import { AuthService } from '../auth/auth.service';
 @Controller('user')
 @ApiTags('user')
 export class UserController {
-  constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService) {}
 
   @Post('login')
   @HttpCode(200)

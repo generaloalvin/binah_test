@@ -5,14 +5,17 @@ import { FcvController } from './fcv.controller';
 import { AuthModule } from '../auth/auth.module';
 import { UserModule } from '../user/user.module';
 import { FcvService } from './fcv.service';
+import { FcvModel } from './fcv.model';
+import { AiModule } from '../ai/ai.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Fcv.name, schema: FcvSchema }]),
     AuthModule,
     UserModule,
+    AiModule,
   ],
   controllers: [FcvController],
-  providers: [FcvService],
+  providers: [FcvService, FcvModel],
 })
-export class FcvModule {}
+export class FcvModule { }

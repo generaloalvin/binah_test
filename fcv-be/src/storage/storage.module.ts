@@ -10,6 +10,6 @@ import { STORAGE_KEY } from './storage';
       useClass: LocalStorageService,
     },
   ],
-  exports: [STORAGE_KEY]
+  exports: [STORAGE_KEY],
 })
-export class StorageModule { }
+export class StorageModule {}
