@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { FcvController } from './fcv.controller';
 import { AuthModule } from '../auth/auth.module';
 import { UserModule } from '../user/user.module';
+import { FcvService } from './fcv.service';
 
 @Module({
   imports: [
@@ -12,5 +13,6 @@ import { UserModule } from '../user/user.module';
     UserModule,
   ],
   controllers: [FcvController],
+  providers: [FcvService],
 })
 export class FcvModule {}
