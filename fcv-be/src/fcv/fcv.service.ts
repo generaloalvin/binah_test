@@ -13,8 +13,8 @@ export class FcvService {
   constructor(
     @Inject(STORAGE_KEY) private readonly storage: Storage,
     private readonly fcvModel: FcvModel,
-    private readonly aiService: AiService
-  ) { }
+    private readonly aiService: AiService,
+  ) {}
 
   async processCoughSample(
     file: Express.Multer.File,
@@ -23,30 +23,42 @@ export class FcvService {
   ): Promise<Fcv> {
     const storedFile = await this.storage.uploadFile(file);
 
-    const results: FcvResults[] = await Promise.all(test_types.map<Promise<FcvResults>>(async (test_type: FcvTestTypes) => {
-      let coughSampleResult: CoughSampleResult | null = null
-      let error_reason: string | null = null
+    const results: FcvResults[] = await Promise.all(
+      test_types.map<Promise<FcvResults>>(async (test_type: FcvTestTypes) => {
+        let coughSampleResult: CoughSampleResult | null = null;
+        let error_reason: string | null = null;
 
-      try {
-        coughSampleResult = await this.aiService.processCoughSample(storedFile, test_type)
-      } catch (error) {
-        error_reason = error.message
-      }
+        try {
+          coughSampleResult = await this.aiService.processCoughSample(
+            storedFile,
+            test_type,
+          );
+        } catch (error) {
+          error_reason = error.message;
+        }
 
-      return {
-        confidence: coughSampleResult?.confidence ?? null,
-        error_reason,
-        test_type,
-        is_successful: !error_reason,
-        created_at: new Date()
-      }
-    }))
+        return {
+          confidence: coughSampleResult?.confidence ?? null,
+          error_reason,
+          test_type,
+          is_successful: !error_reason,
+          created_at: new Date(),
+        };
+      }),
+    );
 
     return this.fcvModel.create({
       cough_sample: storedFile,
       test_types: test_types as FcvTestTypes[],
       user: user_id as any,
-      results
-    })
+      results,
+    });
+  }
+
+  async getResults(
+    user_id: string,
+    test_type: FcvTestTypes,
+  ): Promise<FcvResults[]> {
+    return this.fcvModel.getResultsForUser(user_id, test_type);
   }
 }

@@ -1,3 +1,3 @@
 export interface CoughSampleResult {
-  confidence: number
+  confidence: number;
 }

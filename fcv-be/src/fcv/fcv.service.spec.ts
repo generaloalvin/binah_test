@@ -16,6 +16,7 @@ describe('FcvService', () => {
 
   const modelMock = {
     create: jest.fn(),
+    getResultsForUser: jest.fn(),
   };
 
   const mockFile: any = {
@@ -25,8 +26,8 @@ describe('FcvService', () => {
   const aiServiceMock = {
     processCoughSample: jest.fn().mockResolvedValue({
       confidence: 0.9,
-    })
-  }
+    }),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -42,8 +43,8 @@ describe('FcvService', () => {
         },
         {
           provide: AiService,
-          useValue: aiServiceMock
-        }
+          useValue: aiServiceMock,
+        },
       ],
     }).compile();
 
@@ -63,7 +64,7 @@ describe('FcvService', () => {
       },
       test_types: [FcvTestTypes.SMK],
       user: 'test_id' as any,
-      results: []
+      results: [],
     };
 
     const storedFile: StoredFile = {
@@ -91,8 +92,8 @@ describe('FcvService', () => {
           is_successful: true,
           test_type: FcvTestTypes.SMK,
           created_at: expect.any(Date),
-        }
-      ]
+        },
+      ],
     });
     expect(fcv).toEqual(createdFcv);
   });
@@ -104,7 +105,7 @@ describe('FcvService', () => {
       },
       test_types: [FcvTestTypes.SMK, FcvTestTypes.TB],
       user: 'test_id' as any,
-      results: []
+      results: [],
     };
 
     const storedFile1: StoredFile = {
@@ -138,9 +139,31 @@ describe('FcvService', () => {
           is_successful: true,
           test_type: FcvTestTypes.TB,
           created_at: expect.any(Date),
-        }
-      ]
+        },
+      ],
     });
     expect(fcv).toEqual(createdFcv);
   });
+
+  it('should get cough sample results', async () => {
+    const coughSampleResults: Fcv = {
+      cough_sample: {
+        path: 'test',
+      },
+      test_types: [FcvTestTypes.SMK],
+      user: 'test_id' as any,
+      results: [],
+    };
+
+    modelMock.getResultsForUser.mockResolvedValueOnce(coughSampleResults);
+
+    const results = await service.getResults('test_id', FcvTestTypes.SMK);
+    expect(modelMock.getResultsForUser).toHaveBeenCalled();
+    expect(modelMock.getResultsForUser).toHaveBeenCalledWith(
+      'test_id',
+      FcvTestTypes.SMK,
+    );
+    expect(results).toEqual(coughSampleResults);
+  })
+
 });

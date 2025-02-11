@@ -18,4 +18,4 @@ import { AiModule } from '../ai/ai.module';
   controllers: [FcvController],
   providers: [FcvService, FcvModel],
 })
-export class FcvModule { }
+export class FcvModule {}

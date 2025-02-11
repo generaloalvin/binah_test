@@ -22,14 +22,18 @@ export class Fcv {
   @Prop([{ type: String, enum: FcvTestTypes }])
   test_types: FcvTestTypes[];
 
-  @Prop(raw([{
-    test_type: { type: String, enum: FcvTestTypes },
-    is_successful: { type: Boolean },
-    confidence: { type: Number },
-    error_reason: { type: String },
-    created_at: { type: Date },
-  }]))
-  results: FcvResults[]
+  @Prop(
+    raw([
+      {
+        test_type: { type: String, enum: FcvTestTypes },
+        is_successful: { type: Boolean },
+        confidence: { type: Number },
+        error_reason: { type: String },
+        created_at: { type: Date },
+      },
+    ]),
+  )
+  results: FcvResults[];
 
   @Prop({ type: Date, default: Date.now })
   created_at?: Date;
