@@ -8,6 +8,16 @@ services:
       - ./fcv-be:/app
     networks:
       - fcv-network
+  
+  frontend:
+    build: ./fcv-fe
+    command: npm run dev
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./fcv-fe:/app
+    networks:
+      - fcv-network
 
   mongo:
     image: mongo:8.0
