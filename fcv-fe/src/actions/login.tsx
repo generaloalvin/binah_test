@@ -11,7 +11,8 @@ const loginSchema = z.object({
 });
 
 export async function login(formdata: FormData) {
-  console.log("login action", formdata);
+  const cookieStore = await cookies();
+
   const { success, data, error } = loginSchema.safeParse({
     email: formdata.get("email"),
     password: formdata.get("password"),
@@ -21,14 +22,11 @@ export async function login(formdata: FormData) {
     return { errors: error.errors };
   }
 
-  // LOGIN LOGIC HERE
-  const response = await loginApi(data.email, data.password);
+  const response = await loginApi(data.email.trim(), data.password.trim());
 
   if (!response.success) {
     return { errors: ["Invalid credentials"] };
   }
-
-  const cookieStore = await cookies();
 
   cookieStore.set("token", response.token!);
 

@@ -1,10 +1,10 @@
 import { Login } from "@/components/Login/Login";
-import Image from "next/image";
+import { login } from "@/actions/login";
 
 export default function Home() {
   return (
     <div>
-      <Login />
+      <Login loginAction={login} />
     </div>
   );
 }

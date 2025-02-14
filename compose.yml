@@ -8,6 +8,8 @@ services:
       - ./fcv-be:/app
     networks:
       - fcv-network
+    depends_on:
+      - mongo
   
   frontend:
     build: ./fcv-fe
@@ -18,6 +20,8 @@ services:
       - ./fcv-fe:/app
     networks:
       - fcv-network
+    depends_on:
+      - backend
 
   mongo:
     image: mongo:8.0
