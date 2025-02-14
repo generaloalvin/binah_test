@@ -7,6 +7,7 @@ import { FcvTestTypes } from './fcv.enum';
 import { AiService } from '../ai/ai.service';
 import { CoughSampleResult } from '../ai/ai.interface';
 import { FcvResults } from './fcv.interface';
+import { FcvResultsDto } from './fcv.dto';
 
 @Injectable()
 export class FcvService {
@@ -14,7 +15,7 @@ export class FcvService {
     @Inject(STORAGE_KEY) private readonly storage: Storage,
     private readonly fcvModel: FcvModel,
     private readonly aiService: AiService,
-  ) {}
+  ) { }
 
   async processCoughSample(
     file: Express.Multer.File,
@@ -58,7 +59,7 @@ export class FcvService {
   async getResults(
     user_id: string,
     test_type: FcvTestTypes,
-  ): Promise<FcvResults[]> {
-    return this.fcvModel.getResultsForUser(user_id, test_type);
+  ): Promise<FcvResultsDto[]> {
+    return (await this.fcvModel.getResultsForUser(user_id, test_type)).map(f => FcvResultsDto.fromFcvResults(f));
   }
 }

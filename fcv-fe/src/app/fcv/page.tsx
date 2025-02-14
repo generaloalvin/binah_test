@@ -1,5 +1,6 @@
 import { CoughSampleInput } from "@/components/CoughSampleInput/CoughSampleInput";
 import { LogoutButton } from "@/components/Logout/Logout";
+import { Separator } from "@/components/ui/separator";
 import {
   Table,
   TableBody,
@@ -17,6 +18,7 @@ export default function Page() {
         <LogoutButton />
       </div>
       <CoughSampleInput />
+      <Separator className="mt-4 bg-black" />
       <Table>
         <TableCaption>List of FCV Results</TableCaption>
         <TableHeader>

@@ -10,10 +10,10 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { GetFcvQueryDto, PostFcvDto } from './fcv.dto';
+import { FcvResultsDto, GetFcvQueryDto, PostFcvDto } from './fcv.dto';
 import { FcvService } from './fcv.service';
 import { Request } from 'express';
 import { UserDto } from '../user/user.dto';
@@ -22,16 +22,19 @@ import { FcvTestTypes } from './fcv.enum';
 @Controller('fcv')
 @ApiTags('fcv')
 export class FcvController {
-  constructor(private readonly fcvService: FcvService) {}
+  constructor(private readonly fcvService: FcvService) { }
 
   @Post()
   @UseGuards(AuthGuard)
   @UseInterceptors(FileInterceptor('file'))
-  @HttpCode(200)
+  @HttpCode(204)
   @ApiBearerAuth()
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     type: PostFcvDto,
+  })
+  @ApiResponse({
+    status: 204,
   })
   async postResults(
     @UploadedFile() file: Express.Multer.File,
@@ -48,15 +51,17 @@ export class FcvController {
   @Get()
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
+  @ApiResponse({
+    status: 200,
+    type: [FcvResultsDto],
+  })
   async getResults(
     @Query() query: GetFcvQueryDto,
     @Req() request: Request & { user: UserDto },
   ) {
-    return {
-      data: await this.fcvService.getResults(
-        request.user._id,
-        query.test_type as FcvTestTypes,
-      ),
-    };
+    return this.fcvService.getResults(
+      request.user._id,
+      query.test_type as FcvTestTypes,
+    )
   }
 }

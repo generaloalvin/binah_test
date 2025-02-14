@@ -44,6 +44,8 @@ export const CoughSampleInput: React.FC = () => {
         cough_sample: file,
         test_type: testType,
       });
+
+      window.location.reload();
     } catch (error) {
       toast({
         title: "Failed to process cough sample",

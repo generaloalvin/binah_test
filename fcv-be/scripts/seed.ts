@@ -14,7 +14,7 @@ async function bootstrap() {
   for (let i = 0; i < 3; i++) {
     logger.log(`Creating user ${i + 1}`);
     await userService.create({
-      email: faker.internet.email(),
+      email: `test${i + 1}@test.com`,
       name: faker.person.firstName() + ' ' + faker.person.lastName(),
       password: 'testtest',
     });
