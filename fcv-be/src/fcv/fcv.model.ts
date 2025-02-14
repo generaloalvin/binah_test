@@ -15,15 +15,21 @@ export class FcvModel {
   }
 
   async getResultsForUser(
-    user_id: string,
-    test_type: FcvTestTypes,
+    userId: string,
+    testType: FcvTestTypes,
   ): Promise<FcvResults[]> {
+
+
+    const testTypeFilter: FcvTestTypes[] = testType === FcvTestTypes.TB_SMK
+      ? [FcvTestTypes.TB, FcvTestTypes.SMK]
+      : [testType];
+
     const results = await this.fcvModel
       .aggregate([
         {
           $match: {
-            user: user_id,
-            'results.test_type': test_type,
+            user: userId,
+            'results.test_type': { $in: testTypeFilter },
             'results.is_successful': true,
           },
         },
@@ -35,7 +41,7 @@ export class FcvModel {
                 input: '$results',
                 as: 'result',
                 cond: {
-                  $eq: ['$$result.test_type', 'TB'],
+                  $in: ['$$result.test_type', testTypeFilter],
                 },
               },
             },

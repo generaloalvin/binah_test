@@ -43,3 +43,30 @@ export const processCoughSampleApi = async (body: ProcessCoughSampleBody, token:
     throw new Error("Failed to process cough sample");
   }
 }
+
+export interface FcvResults {
+  confidence: number | null;
+  error_reason: string | null;
+  test_type: TestType;
+  is_successful: boolean;
+  created_at: string;
+}
+
+export interface GetFcvResultsQuery {
+  test_type: TestType;
+}
+
+export const getFcvResultsApi = async (query: GetFcvResultsQuery, token: string): Promise<FcvResults[]> => {
+  const response = await fetch(`${process.env.BACKEND_BASE_URL}/fcv?test_type=${encodeURIComponent(query.test_type)}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to get results");
+  }
+
+  return response.json();
+}

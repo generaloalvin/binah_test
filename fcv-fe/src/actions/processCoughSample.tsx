@@ -12,8 +12,6 @@ export async function processCoughSample(body: ProcessCoughSampleBody) {
 
   const token = cookieStore.get("token");
 
-  console.log("Token", token);
-
   if (!token) {
     redirect("/");
     return;
