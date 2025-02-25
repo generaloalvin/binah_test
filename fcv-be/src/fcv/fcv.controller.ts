@@ -10,7 +10,13 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { AuthGuard } from '../auth/auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FcvResultsDto, GetFcvQueryDto, PostFcvDto } from './fcv.dto';
@@ -22,7 +28,7 @@ import { FcvTestTypes } from './fcv.enum';
 @Controller('fcv')
 @ApiTags('fcv')
 export class FcvController {
-  constructor(private readonly fcvService: FcvService) { }
+  constructor(private readonly fcvService: FcvService) {}
 
   @Post()
   @UseGuards(AuthGuard)
@@ -62,6 +68,6 @@ export class FcvController {
     return this.fcvService.getResults(
       request.user._id,
       query.test_type as FcvTestTypes,
-    )
+    );
   }
 }

@@ -15,7 +15,7 @@ export class FcvService {
     @Inject(STORAGE_KEY) private readonly storage: Storage,
     private readonly fcvModel: FcvModel,
     private readonly aiService: AiService,
-  ) { }
+  ) {}
 
   async processCoughSample(
     file: Express.Multer.File,
@@ -60,6 +60,8 @@ export class FcvService {
     user_id: string,
     test_type: FcvTestTypes,
   ): Promise<FcvResultsDto[]> {
-    return (await this.fcvModel.getResultsForUser(user_id, test_type)).map(f => FcvResultsDto.fromFcvResults(f));
+    return (await this.fcvModel.getResultsForUser(user_id, test_type)).map(
+      (f) => FcvResultsDto.fromFcvResults(f),
+    );
   }
 }

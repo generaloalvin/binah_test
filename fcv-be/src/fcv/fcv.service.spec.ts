@@ -164,6 +164,5 @@ describe('FcvService', () => {
       FcvTestTypes.SMK,
     );
     expect(results).toEqual(coughSampleResults);
-  })
-
+  });
 });

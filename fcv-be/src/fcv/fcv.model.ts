@@ -7,7 +7,7 @@ import { FcvResults } from './fcv.interface';
 
 @Injectable()
 export class FcvModel {
-  constructor(@InjectModel(Fcv.name) private fcvModel: Model<Fcv>) { }
+  constructor(@InjectModel(Fcv.name) private fcvModel: Model<Fcv>) {}
 
   async create(fcv: Fcv): Promise<FcvDocument> {
     const createdFcv = new this.fcvModel(fcv);
@@ -18,11 +18,10 @@ export class FcvModel {
     userId: string,
     testType: FcvTestTypes,
   ): Promise<FcvResults[]> {
-
-
-    const testTypeFilter: FcvTestTypes[] = testType === FcvTestTypes.TB_SMK
-      ? [FcvTestTypes.TB, FcvTestTypes.SMK]
-      : [testType];
+    const testTypeFilter: FcvTestTypes[] =
+      testType === FcvTestTypes.TB_SMK
+        ? [FcvTestTypes.TB, FcvTestTypes.SMK]
+        : [testType];
 
     const results = await this.fcvModel
       .aggregate([
@@ -53,8 +52,8 @@ export class FcvModel {
         {
           $sort: {
             'results.created_at': -1,
-          }
-        }
+          },
+        },
       ])
       .exec();
 
