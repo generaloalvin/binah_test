@@ -7,6 +7,7 @@ import { getModelToken } from '@nestjs/mongoose';
 import { Fcv } from './fvc.schema';
 import { FcvTestTypes } from './fcv.enum';
 import { AiService } from '../ai/ai.service';
+import { FcvResults } from './fcv.interface';
 
 describe('FcvService', () => {
   let service: FcvService;
@@ -146,14 +147,13 @@ describe('FcvService', () => {
   });
 
   it('should get cough sample results', async () => {
-    const coughSampleResults: Fcv = {
-      cough_sample: {
-        path: 'test',
-      },
-      test_types: [FcvTestTypes.SMK],
-      user: 'test_id' as any,
-      results: [],
-    };
+    const coughSampleResults: FcvResults[] = [{
+      confidence: 0.1,
+      created_at: new Date(),
+      error_reason: null,
+      is_successful: true,
+      test_type: FcvTestTypes.SMK
+    }];
 
     modelMock.getResultsForUser.mockResolvedValueOnce(coughSampleResults);
 
