@@ -4,8 +4,6 @@ services:
     command: npm run start:dev
     ports:
       - "3000:3000"
-    volumes:
-      - ./fcv-be:/app
     networks:
       - fcv-network
     depends_on:
@@ -16,8 +14,6 @@ services:
     command: npm run dev
     ports:
       - "3001:3000"
-    volumes:
-      - ./fcv-fe:/app
     networks:
       - fcv-network
     depends_on:
